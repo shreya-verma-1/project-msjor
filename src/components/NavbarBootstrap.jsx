@@ -142,7 +142,7 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className="nav-item ms-2">
-                  <Link className="btn btn-custom-primary btn-sm" to="/signin">
+                  <Link className="btn btn-custom-primary btn-sm" to="/student-signup">
                     Sign Up
                   </Link>
                 </li>

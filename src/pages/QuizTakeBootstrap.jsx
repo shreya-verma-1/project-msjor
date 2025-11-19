@@ -6,9 +6,19 @@ import { useAuth } from '../context/AuthContext';
 import { Clock, CheckCircle, XCircle, Award } from 'lucide-react';
 
 const QuizTakeBootstrap = () => {
-  const { quizId } = useParams();
+  const params = useParams();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  
+  // Debug: Log the params object structure
+  console.log('Full params object:', params);
+  console.log('Params keys:', Object.keys(params));
+  
+  // Try to extract quizId from params
+  const quizId = params.id || params.quizId;
+  console.log('Extracted quizId:', quizId);
+  console.log('Current URL:', window.location.href);
+  console.log('Full path:', window.location.pathname);
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -32,6 +42,13 @@ const QuizTakeBootstrap = () => {
   }, [timeLeft, quizStarted, quizCompleted]);
 
   const fetchQuiz = async () => {
+    if (!quizId) {
+      console.error('No quiz ID provided');
+      navigate('/quizzes');
+      setLoading(false);
+      return;
+    }
+    
     try {
       const quizDoc = await getDoc(doc(db, 'quizzes', quizId));
       if (quizDoc.exists()) {
@@ -61,7 +78,7 @@ const QuizTakeBootstrap = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestion < quiz.questions.length - 1) {
+    if (quiz && quiz.questions && currentQuestion < quiz.questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
@@ -73,6 +90,7 @@ const QuizTakeBootstrap = () => {
   };
 
   const calculateScore = () => {
+    if (!quiz || !quiz.questions) return 0;
     let correct = 0;
     quiz.questions.forEach((question, index) => {
       if (answers[index] === question.correctAnswer) {
@@ -115,6 +133,22 @@ const QuizTakeBootstrap = () => {
       <div className="container d-flex justify-content-center align-items-center min-vh-100">
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!quiz || !quiz.questions || quiz.questions.length === 0) {
+    return (
+      <div className="container d-flex justify-content-center align-items-center min-vh-100">
+        <div className="text-center">
+          <h2 className="mb-4">Quiz not found</h2>
+          <button 
+            onClick={() => navigate('/quizzes')}
+            className="btn btn-primary"
+          >
+            Back to Quizzes
+          </button>
         </div>
       </div>
     );

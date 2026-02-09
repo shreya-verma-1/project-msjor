@@ -42,4 +42,4 @@ build
 
 # PWA
 sw.js
-workbox-*.js
+workbox-*.js.env 

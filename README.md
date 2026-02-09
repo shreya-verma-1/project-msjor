@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Digital Learning Platform
 
 A Progressive Web App (PWA) designed to empower rural students in India with free, accessible, and high-quality educational resources.
@@ -174,3 +175,6 @@ This platform is dedicated to empowering rural students across India with access
 ---
 
 *Digital Learning Platform* - Empowering Rural Students Through Digital Learning
+=======
+# project-msjor
+>>>>>>> 973dee2e748f10751833dec312aa5daa6dc02bf8
